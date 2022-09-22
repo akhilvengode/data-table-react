@@ -1,0 +1,12 @@
+.table-cell {
+    padding: 1rem;
+    text-align: left;
+}
+
+.table-cell--header {
+    font-weight: 500;
+}
+
+.table-cell--clickable {
+    cursor: pointer;
+}

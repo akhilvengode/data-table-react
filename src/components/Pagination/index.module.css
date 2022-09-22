@@ -1,0 +1,15 @@
+.pagination {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 1rem;
+    gap: 2rem;
+    background-color: white;
+    margin-top: 1rem;
+    border-radius: 8px;
+    box-shadow: 2px 2px 3px lightgrey;
+}
+
+.pagination__pageno {
+    font-size: 0.9rem;
+}

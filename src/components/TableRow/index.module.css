@@ -1,0 +1,12 @@
+.table-row {
+    border-bottom: 1px solid lightgrey;
+}
+
+.table-row--clickable {
+    cursor: pointer;
+    transition: background-color 200ms;
+}
+
+.table-row--clickable:hover {
+    background-color: #f3f3f3;
+}

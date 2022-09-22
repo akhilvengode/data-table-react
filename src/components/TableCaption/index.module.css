@@ -1,0 +1,15 @@
+.table-caption {
+    padding: 1rem;
+    text-align: left;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 2px 2px 3px lightgray;
+    margin-bottom: 1rem;
+    font-weight: 500;
+}
+
+.table-caption--bottom {
+    caption-side: bottom;
+    margin-top: 1rem;
+    margin-bottom: 0;
+}

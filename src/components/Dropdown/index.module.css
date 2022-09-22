@@ -1,0 +1,13 @@
+.dropdown {
+    display: flex;
+    align-items: center;
+}
+
+.dropdown select {
+    padding: 5px;
+}
+
+.dropdown__label {
+    font-size: 0.9rem;
+    margin-right: 1rem;
+}

@@ -1,0 +1,12 @@
+.pagination-button__arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 10px;
+    height: 10px;
+}
+
+.pagination-button__arrow img {
+    width: 100%;
+    height: 100%;
+}

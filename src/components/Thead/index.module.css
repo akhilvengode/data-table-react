@@ -1,0 +1,18 @@
+.thead__content {
+    display: flex;
+    align-items: flex-end;
+    gap: 5px;
+}
+
+.thead__content--sortable {
+    cursor: pointer;;
+}
+
+.thead__content--current-sort-field .thead__icon,
+.thead__content--sortable:hover .thead__icon {
+    display: block;
+}
+
+.thead__icon {
+    display: none;
+}
