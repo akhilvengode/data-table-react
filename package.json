@@ -1,6 +1,6 @@
 {
-  "name": "data-table-react",
-  "version": "0.0.1",
+  "name": "@akhilvengode/data-table-react",
+  "version": "0.0.2",
   "description": "Data table component created using react",
   "scripts": {
     "rollup": "rollup -c",
@@ -46,5 +46,8 @@
   "files": [
     "dist"
   ],
-  "types": "dist/index.d.ts"
+  "types": "dist/index.d.ts",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/akhilvengode"
+  }
 }

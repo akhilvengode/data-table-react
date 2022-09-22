@@ -33,7 +33,8 @@ export default [
       postcss({
         extract: true,
         autoModules: true,
-        modules: true
+        modules: true,
+        extensions: [".css"]
       }),
       terser()
     ],
