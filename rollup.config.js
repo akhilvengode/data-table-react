@@ -30,12 +30,7 @@ export default [
       resolve(),
       commonjs(),
       typescript({ tsconfig: "./tsconfig.json" }),
-      postcss({
-        extract: true,
-        autoModules: true,
-        modules: true,
-        extensions: [".css"]
-      }),
+      postcss(),
       terser()
     ],
   },
