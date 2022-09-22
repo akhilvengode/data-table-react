@@ -1,6 +1,6 @@
 {
   "name": "@akhilvengode/data-table-react",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Data table component created using react",
   "scripts": {
     "rollup": "rollup -c",
