@@ -36,8 +36,8 @@ const Pagination = ({
         className={styles.pagination__pageno}
       >{`${startIndex} - ${endIndex} of ${totalItems}`}</div>
       <div>
-        <PaginationButton dir="left" onClick={onPreviousPage} />
-        <PaginationButton dir="right" onClick={onNextPage} />
+        <PaginationButton type="button" dir="left" onClick={onPreviousPage} />
+        <PaginationButton type="button" dir="right" onClick={onNextPage} />
       </div>
     </div>
   );

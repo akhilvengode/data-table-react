@@ -1,71 +1,165 @@
 import React from "react";
 import { Meta, Story } from "@storybook/react";
 import { Table } from "..";
-import { ColumnType, TableTypes } from "../types/Table";
+import { RowType, TableTypes } from "../types/Table";
+import constants from "./constants";
+import styles from "./Table.module.css";
+
+const { columns, rows, customColumn1, customRows1, customColumn2 } = constants;
 
 export default {
   title: "Table",
   component: Table,
+  argTypes: {
+    perPage: { control: "number", if: { arg: "pagination" } },
+    collapsibleKey: { control: "string", if: { arg: "collapsible" } },
+    captionPosition: { controls: "radio", if: { arg: "caption" } },
+  },
 } as Meta;
-
-const columns: Array<ColumnType> = [
-  {
-    name: "name",
-    id: "1",
-    content: "Name",
-    // onClick: (rowData: Record<string, any>) => {
-    //   console.log(rowData.id, rowData.name);
-    // },
-  },
-  {
-    name: "age",
-    id: "2",
-    content: "Age",
-  },
-  {
-    name: "sex",
-    id: "3",
-    content: "Sex",
-  },
-  //   {
-  //     name: (row: Record<string, number>) =>
-  //       row.age > 18 ? "Adult" : "Not Adult",
-  //     id: "4",
-  //     content: "Adult or Not",
-  //   },
-];
-
-const rows = [
-  { id: "1", name: "Akhil M L", age: 26, sex: "Male" },
-  { id: "2", name: "Tony C J", age: 25, sex: "Male" },
-  { id: "3", name: "Aparna V K", age: 25, sex: "Female" },
-  { id: "4", name: "Amal S R", age: 25, sex: "Male" },
-  { id: "5", name: "Akhil M L", age: 26, sex: "Male" },
-  { id: "6", name: "Tony C J", age: 25, sex: "Male" },
-  { id: "7", name: "Aparna V K", age: 25, sex: "Female" },
-  { id: "8", name: "Amal S R", age: 25, sex: "Male" },
-  { id: "9", name: "Akhil M L", age: 26, sex: "Male" },
-  { id: "10", name: "Tony C J", age: 25, sex: "Male" },
-  { id: "11", name: "Aparna V K", age: 25, sex: "Female" },
-  { id: "12", name: "Amal S R", age: 25, sex: "Male" },
-  { id: "13", name: "Akhil M L", age: 26, sex: "Male" },
-  { id: "14", name: "Tony C J", age: 25, sex: "Male" },
-  { id: "15", name: "Aparna V K", age: 25, sex: "Female" },
-  { id: "16", name: "Amal S R", age: 25, sex: "Male" },
-  { id: "17", name: "Akhil M L", age: 26, sex: "Male" },
-  { id: "18", name: "Tony C J", age: 25, sex: "Male" },
-  { id: "19", name: "Aparna V K", age: 25, sex: "Female" },
-  { id: "20", name: "Amal S R", age: 25, sex: "Male" },
-  { id: "21", name: "Akhil M L", age: 26, sex: "Male" },
-  { id: "22", name: "Tony C J", age: 25, sex: "Male" },
-  { id: "23", name: "Aparna V K", age: 25, sex: "Female" },
-  { id: "24", name: "Amal S R", age: 25, sex: "Male" },
-];
 
 const Template: Story<TableTypes> = (args) => <Table {...args} />;
 
 export const Simple = Template.bind({});
 Simple.args = {
   columns,
+  rows: rows.slice(0, 7),
+};
+Simple.parameters = { controls: { include: [] } };
+
+export const TableCaption = Template.bind({});
+TableCaption.args = {
+  columns,
+  rows: rows.slice(0, 7),
+  onRowClick: undefined,
+  caption: "Table Caption",
+};
+TableCaption.parameters = {
+  controls: { include: ["caption", "captionPosition"] },
+};
+
+export const Pagination = Template.bind({});
+Pagination.args = {
+  columns,
   rows,
+  pagination: true,
+  onRowClick: undefined,
+};
+Pagination.parameters = { controls: { include: ["pagination", "perPage"] } };
+
+export const CustomColumn = Template.bind({});
+const columnClone = columns.slice();
+columnClone.push({
+  id: "4",
+  name: (row) => (row?.age > 18 ? "Adult" : "Not Adult"),
+  content: "Adult or Not",
+});
+CustomColumn.args = {
+  columns: columnClone,
+  rows: rows.slice(0, 7),
+  onRowClick: undefined,
+};
+
+CustomColumn.parameters = { controls: { include: [] } };
+
+export const BasicSort = Template.bind({});
+const sortColumns = columns.slice();
+sortColumns[0] = { ...sortColumns[0], sortable: true };
+BasicSort.args = {
+  columns: sortColumns,
+  rows: rows.slice(0, 7),
+  onRowClick: undefined,
+};
+BasicSort.parameters = { controls: { include: ["columns"] } };
+
+export const DefaultSortField = Template.bind({});
+DefaultSortField.args = {
+  columns: sortColumns,
+  rows: rows.slice(0, 7),
+  onRowClick: undefined,
+  defaultSortField: 0,
+};
+DefaultSortField.parameters = {
+  controls: { include: [] },
+};
+
+export const CustomSortFunction = Template.bind({});
+const customSortColumns = columns.slice();
+customSortColumns[1] = {
+  ...customSortColumns[1],
+  sortable: true,
+  sortFunction: (a, b) => a - b,
+};
+CustomSortFunction.args = {
+  columns: customSortColumns,
+  rows: rows.slice(0, 7),
+  onRowClick: undefined,
+  defaultSortField: 1,
+};
+
+export const Collapsible = Template.bind({});
+
+const getCustomUI = (row: RowType) => {
+  const { name, sex, age } = row;
+
+  return (
+    <div style={{ padding: "1rem", backgroundColor: "lightblue" }}>
+      <h1>Information</h1>
+      <ul>
+        <li>Name: {name}</li>
+        <li>Age: {age}</li>
+        <li>Sex: {sex}</li>
+      </ul>
+    </div>
+  );
+};
+Collapsible.args = {
+  columns,
+  rows: rows.slice(0, 7),
+  collapsible: true,
+  collapsibleBody: getCustomUI,
+};
+
+export const Overflow = Template.bind({});
+
+Overflow.args = {
+  columns,
+  rows,
+  onRowClick: undefined,
+  wrapperStyle: styles.table__wrapper,
+};
+
+Overflow.parameters = {
+  controls: { include: [] },
+};
+
+export const FixedHeader = Template.bind({});
+
+FixedHeader.args = {
+  columns,
+  rows,
+  onRowClick: undefined,
+  wrapperStyle: styles.table__wrapper,
+  fixedHeader: true,
+};
+
+export const CustomTable1 = Template.bind({});
+
+CustomTable1.args = {
+  columns: customColumn1,
+  rows: customRows1,
+  onRowClick: undefined,
+  containerStyle: styles["custom-table1__container"],
+  headerStyle: styles["custom-table1__header"],
+  rowStyle: styles["custom-table1__row"],
+};
+
+export const CustomTable2 = Template.bind({});
+
+CustomTable2.args = {
+  columns: customColumn2,
+  rows: customRows1,
+  onRowClick: undefined,
+  headerStyle: styles["custom-table2__header"],
+  rowStyle: styles["custom-table2__row"],
+  tbodyStyle: styles["custom-table2__body"],
 };

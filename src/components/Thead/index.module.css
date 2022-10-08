@@ -16,3 +16,12 @@
 .thead__icon {
     display: none;
 }
+
+.thead--fixed-header {
+    position: sticky;
+    top: 0;
+}
+
+.thead__cell {
+    border-bottom: 1px solid grey;
+}

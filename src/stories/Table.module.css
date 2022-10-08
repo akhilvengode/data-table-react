@@ -1,0 +1,72 @@
+.table__wrapper {
+    height: 400px;
+}
+
+.custom-table1__container {
+    padding: 1rem 2rem 1rem 2rem;
+    border-radius: 0;
+    background-color: #3c373e;
+}
+
+.custom-table1__header {
+    background-color: #3c373e;
+    color: white;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 0.8rem;
+}
+
+.custom-table1__row {
+    background-color: #3c373e;
+    color: #777378;
+    transition: color 200ms ease-in-out;
+    font-size: 0.9rem;
+}
+
+.custom-table1__row td {
+    border-width: 0;
+}
+
+.custom-table1__row:nth-child(2n + 1) {
+    background-color: #39343b;
+}
+
+.custom-table1__row:hover {
+    color: white;
+}
+
+.custom-table1__clickable-cell:hover {
+    color: #fdd119;
+}
+
+.custom-table2__header {
+    background-image: linear-gradient(to right, #8453fe, #bf70ef);
+    color: white;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 0.8rem;
+}
+
+.custom-table2__header th {
+    border-width: 0;
+}
+
+.custom-table2__body {
+    background-image: linear-gradient(to right, #8453fe, #bf70ef);
+    overflow: hidden;
+}
+
+.custom-table2__row {
+    transition: background-color 250ms ease-in-out;
+    background-color:rgba(255,255,255,0.05);
+}
+
+.custom-table2__row:hover {
+    background-color:rgba(255,255,255,0.15);
+}
+
+.custom-table2__row td {
+    border-width: 0;
+    color: white;
+    font-size: 0.9rem;
+}

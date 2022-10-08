@@ -9,7 +9,15 @@ interface SortData {
   sortDir: "asc" | "dec";
 }
 
-const getRows = (rows: Array<RowType>, pageNo: number, perPage: number) => {
+const getRows = (
+  rows: Array<RowType>,
+  pageNo: number,
+  perPage: number,
+  pagination?: boolean
+) => {
+  if (!pagination) {
+    return rows;
+  }
   const result = rows.slice((pageNo - 1) * perPage, pageNo * perPage);
 
   return result;
@@ -50,28 +58,33 @@ export const useData = (
   rows: Array<RowType>,
   columns: Array<ColumnType>,
   perPage?: number,
-  pagination?: boolean
+  pagination?: boolean,
+  defaultSortField?: number
 ) => {
   const [pageNo, setPageNo] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(perPage || 5);
   const [rowsState, setRows] = useState(
-    (pagination && getRows(rows, 1, perPage as number)) || rows
+    getRows(rows, 1, perPage as number, pagination)
   );
-  const [columnState, setColumnState] = useState(columns);
 
   useEffect(() => {
     if (pagination) {
       let sortedList;
-      if (sortField !== undefined) {
+      if (sortData.current?.sortField !== undefined) {
         sortedList = sortRows({
           rows,
-          columns: columnState,
-          sortField,
-          sortDir: sortDir || "asc",
+          columns,
+          sortField: sortData.current.sortField,
+          sortDir: sortData.current.sortDir,
         });
       }
 
-      const updatedList = getRows(sortedList || rows, pageNo, itemsPerPage);
+      const updatedList = getRows(
+        sortedList || rows,
+        pageNo,
+        itemsPerPage,
+        pagination
+      );
       if (rows.length !== 0 && updatedList.length === 0) {
         setPageNo((prev) => prev - 1);
       } else {
@@ -86,41 +99,14 @@ export const useData = (
     setItemsPerPage(perPage || 5);
   }, [perPage]);
 
-  const [sortField, setSortField] = useState<number>();
-  const [sortDir, setSortDir] = useState<"asc" | "dec">();
-  const isSortFieldChange = useRef(false);
-
-  useEffect(() => {
-    if (sortField !== undefined) {
-      isSortFieldChange.current = true;
-      const { dir } = columns[sortField];
-      const sortedList = sortRows({
-        rows,
-        columns,
-        sortField,
-        sortDir: dir || "asc",
-      });
-      setRows(getRows(sortedList, pageNo, itemsPerPage));
-      setSortDir(dir || "asc");
-    }
-  }, [sortField]);
-
-  useEffect(() => {
-    if (isSortFieldChange.current) {
-      isSortFieldChange.current = false;
-    } else {
-      if (sortField !== undefined) {
-        const sortedList = sortRows({
-          rows,
-          columns,
-          sortField,
-          sortDir: sortDir || "asc",
-        });
-
-        setRows(getRows(sortedList, pageNo, itemsPerPage));
-      }
-    }
-  }, [sortDir]);
+  const sortData = useRef<{ sortField: number; sortDir: "asc" | "dec" } | null>(
+    defaultSortField !== undefined
+      ? {
+          sortField: defaultSortField,
+          sortDir: columns[defaultSortField]?.dir || "asc",
+        }
+      : null
+  );
 
   const onNextPage = () => {
     if (pageNo * itemsPerPage < rows.length) {
@@ -139,12 +125,42 @@ export const useData = (
   };
 
   const onSort = (field: number, sortable: boolean) => {
-    if (sortable) {
+    if (!sortable) {
+      return;
+    }
+
+    if (sortData.current) {
+      const { sortField, sortDir } = sortData.current;
       if (field !== sortField) {
-        setSortField(field);
+        const { dir = "asc" } = columns[field];
+        const sortedList = sortRows({
+          rows,
+          columns,
+          sortField: field,
+          sortDir: dir,
+        });
+        setRows(getRows(sortedList, pageNo, itemsPerPage, pagination));
+        sortData.current = { sortField: field, sortDir: dir };
       } else {
-        setSortDir((prev) => (prev === "asc" ? "dec" : "asc"));
+        const sortedList = sortRows({
+          rows,
+          columns,
+          sortField: field,
+          sortDir: sortDir === "asc" ? "dec" : "asc",
+        });
+        setRows(getRows(sortedList, pageNo, itemsPerPage, pagination));
+        sortData.current.sortDir = sortDir === "asc" ? "dec" : "asc";
       }
+    } else {
+      const { dir = "asc" } = columns[field];
+      const sortedList = sortRows({
+        rows,
+        columns,
+        sortField: field,
+        sortDir: dir,
+      });
+      setRows(getRows(sortedList, pageNo, itemsPerPage, pagination));
+      sortData.current = { sortField: field, sortDir: dir };
     }
   };
 
@@ -156,7 +172,7 @@ export const useData = (
     rowsState,
     itemsPerPage,
     pageNo,
-    sortField,
-    sortDir,
+    sortField: sortData.current?.sortField,
+    sortDir: sortData.current?.sortDir,
   };
 };

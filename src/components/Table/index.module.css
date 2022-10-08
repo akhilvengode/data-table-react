@@ -1,8 +1,15 @@
 .table {
     table-layout: fixed;
+    position: relative;
     background-color: white;
     border-radius: 8px;
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
     box-shadow: 2px 2px 3px lightgrey;
+}
+
+.table__wrapper {
+    border-radius: 8px;
+    overflow: auto;
 }

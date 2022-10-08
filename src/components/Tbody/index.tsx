@@ -1,4 +1,4 @@
-import { useState, Fragment } from "react";
+import React, { useState, Fragment } from "react";
 import { ColumnType, RowType } from "../../types/Table";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons/faArrowUp";
@@ -8,20 +8,24 @@ import TableCell from "../TableCell";
 import TableCollapsibleBody from "../TableCollapsibleBody";
 import TableRow from "../TableRow";
 import styles from "./index.module.css";
-import React from "react";
+import { joinClasses } from "../../utils";
 
 const Tbody = ({
   data,
   columns,
   onRowClick,
   collapsible,
-  collapsibleKey,
+  collapsibleBody,
+  rowStyle,
+  className,
 }: {
   data: Array<RowType>;
   columns: Array<ColumnType>;
   onRowClick?: (rowData: RowType) => void;
   collapsible?: boolean;
-  collapsibleKey?: string;
+  collapsibleBody?: (row: RowType) => React.ReactNode;
+  className?: string;
+  rowStyle?: string;
 }) => {
   const [collapsibleState, setCollapsibleState] = useState<Array<boolean>>([]);
   const handleClick = (rowData: RowType) => {
@@ -45,9 +49,11 @@ const Tbody = ({
       columnsClone.unshift({
         id: "collapsible",
         content: "",
-        name: (data) => (
+        name: () => (
           <Button
-            onClick={() => {
+            className={styles["tbody__collapsible-button"]}
+            onClick={(event) => {
+              event.stopPropagation();
               const currentState = collapsibleState.slice();
               currentState[rowIndex] = !currentState[rowIndex];
               setCollapsibleState(currentState);
@@ -61,11 +67,12 @@ const Tbody = ({
       });
     }
 
-    return columnsClone.map(({ name, onClick }, idx) => (
+    return columnsClone.map(({ name, onClick, className }, idx) => (
       <TableCell
         key={idx}
         clickable={!!onClick}
         onClick={() => handleCellClick(rowData, onClick)}
+        className={joinClasses(styles.tbody__cell, className || "")}
       >
         {typeof name === "string"
           ? rowData[name as keyof typeof rowData]
@@ -75,24 +82,25 @@ const Tbody = ({
   };
 
   return (
-    <tbody>
+    <tbody className={joinClasses(styles.tbody, className || "")}>
       {data.map((rowData, rowIdx) => {
         const row = (
           <Fragment key={rowData.id || rowIdx}>
             <TableRow
+              className={rowStyle}
               onClick={() => handleClick(rowData)}
               clickable={!!onRowClick}
             >
               {renderCells(rowData, rowIdx)}
             </TableRow>
-            {collapsible && collapsibleKey && (
+            {collapsible && collapsibleBody && (
               <TableRow>
                 <TableCell
                   className={styles["collapsible-body"]}
-                  colspan={columns.length + 2}
+                  colspan={columns.length + 1}
                 >
                   <TableCollapsibleBody open={collapsibleState[rowIdx]}>
-                    {rowData[collapsibleKey as keyof typeof rowData]}
+                    {collapsibleBody(rowData)}
                   </TableCollapsibleBody>
                 </TableCell>
               </TableRow>

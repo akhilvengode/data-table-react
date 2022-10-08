@@ -15,12 +15,16 @@ const Thead = ({
   sortField,
   sortDir,
   collapsible,
+  fixedHeader,
+  headerStyle,
 }: {
   columns: Array<ColumnType>;
   onSort: (field: number, sortable: boolean) => void;
   sortField?: number;
   sortDir?: "asc" | "dec";
   collapsible?: boolean;
+  fixedHeader?: boolean;
+  headerStyle?: string;
 }) => {
   const offset = useRef(0);
   const renderHeader = () => {
@@ -41,12 +45,13 @@ const Thead = ({
         isHead
         key={id || idx}
         onClick={() => onSort(idx - offset.current, !!sortable)}
+        className={styles.thead__cell}
       >
         <div
           className={joinClasses(
             styles.thead__content,
             (sortable && styles["thead__content--sortable"]) || "",
-            (sortField === idx - 1 &&
+            (sortField === idx - offset.current &&
               styles["thead__content--current-sort-field"]) ||
               ""
           )}
@@ -63,8 +68,13 @@ const Thead = ({
     ));
   };
   return (
-    <thead>
-      <TableRow>{renderHeader()}</TableRow>
+    <thead
+      className={joinClasses(
+        styles.thead,
+        (fixedHeader && styles["thead--fixed-header"]) || ""
+      )}
+    >
+      <TableRow className={headerStyle}>{renderHeader()}</TableRow>
     </thead>
   );
 };

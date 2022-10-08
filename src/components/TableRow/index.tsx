@@ -6,16 +6,19 @@ const TableRow = ({
   children,
   onClick = () => {},
   clickable = false,
+  className,
 }: {
   children: React.ReactNode;
   onClick?: () => void;
   clickable?: boolean;
+  className?: string;
 }) => {
   return (
     <tr
       className={joinClasses(
         styles["table-row"],
-        (clickable && styles["table-row--clickable"]) || ""
+        (clickable && styles["table-row--clickable"]) || "",
+        className || ""
       )}
       onClick={onClick}
     >

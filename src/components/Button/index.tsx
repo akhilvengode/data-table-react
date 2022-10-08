@@ -1,10 +1,17 @@
 import React from "react";
-import { ButtonType } from "../../types/Button";
+import { joinClasses } from "../../utils";
 import styles from "./index.module.css";
 
-const Button = ({ children, ...props }: ButtonType) => {
+const Button = ({
+  children,
+  className,
+  ...props
+}: React.DetailedHTMLProps<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  HTMLButtonElement
+>) => {
   return (
-    <button className={styles.button} {...props}>
+    <button className={joinClasses(styles.button, className || "")} {...props}>
       {children}
     </button>
   );
