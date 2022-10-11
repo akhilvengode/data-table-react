@@ -35,3 +35,13 @@ export interface TableTypes {
   tbodyStyle?: string;
   fixedHeader?: boolean;
 }
+
+export interface TbodyTypes {
+  data: Array<RowType>;
+  columns: Array<ColumnType>;
+  onRowClick?: (rowData: RowType) => void;
+  collapsible?: boolean;
+  collapsibleBody?: (row: RowType) => React.ReactNode;
+  className?: string;
+  rowStyle?: string;
+}

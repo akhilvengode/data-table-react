@@ -1,5 +1,5 @@
 import React, { useState, Fragment } from "react";
-import { ColumnType, RowType } from "../../types/Table";
+import { ColumnType, RowType, TbodyTypes } from "../../types/Table";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons/faArrowUp";
 import { faArrowDown } from "@fortawesome/free-solid-svg-icons/faArrowDown";
@@ -18,15 +18,7 @@ const Tbody = ({
   collapsibleBody,
   rowStyle,
   className,
-}: {
-  data: Array<RowType>;
-  columns: Array<ColumnType>;
-  onRowClick?: (rowData: RowType) => void;
-  collapsible?: boolean;
-  collapsibleBody?: (row: RowType) => React.ReactNode;
-  className?: string;
-  rowStyle?: string;
-}) => {
+}: TbodyTypes) => {
   const [collapsibleState, setCollapsibleState] = useState<Array<boolean>>([]);
   const handleClick = (rowData: RowType) => {
     if (onRowClick) {
