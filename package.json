@@ -1,7 +1,7 @@
 {
   "homepage": "http://akhilvengode.github.io/data-table-react",
   "name": "@akhilvengode/data-table-react",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Data table component created using react",
   "scripts": {
     "rollup": "rollup -c",
