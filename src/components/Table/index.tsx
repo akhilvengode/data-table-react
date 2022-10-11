@@ -1,3 +1,4 @@
+import React from "react";
 import { useData } from "./useData";
 import TableContainer from "../TableContainer";
 import Thead from "../Thead";
@@ -6,7 +7,6 @@ import Tbody from "../Tbody";
 import TableCaption from "../TableCaption";
 import Pagination from "../Pagination";
 import styles from "./index.module.css";
-import React from "react";
 import { joinClasses } from "../../utils";
 
 const Table = ({
