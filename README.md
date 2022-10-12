@@ -10,6 +10,13 @@ Main features
 
 ### Installation and Usage
 
+Add the .npmrc file in your root directory and add the content below
+```
+registry=https://registry.npmjs.org/
+@akhilvengode:registry=https://npm.pkg.github.com/
+//npm.pkg.github.com/:_authToken=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
+```
+After adding the .npmrc file install the package using npm.
 ```
 npm install @akhilvengode/data-table-react@0.0.7
 ```
